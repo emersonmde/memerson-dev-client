@@ -21,6 +21,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "aws s3 sync build/ s3://memerson-dev-client --delete",
+    "postdeploy": "aws cloudfront create-invalidation --distribution-id E24ECMM9YD5NNK --paths '/*'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
