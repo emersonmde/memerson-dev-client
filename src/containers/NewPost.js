@@ -1,38 +1,32 @@
-import React, { useRef, useState } from "react";
-import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form } from "react-bootstrap";
 import { API } from "aws-amplify";
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
 import LoaderButton from "../components/LoaderButton";
-import config from "../config";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import "./NewPost.css";
 
 export default function NewPost(props) {
-  const file = useRef(null);
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+  const [bodyState, setBodyState] = useState(EditorState.createEmpty());
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
-    return content.length > 0;
-  }
-
-  function handleFileChange(event) {
-    file.current = event.target.files[0];
+    return title.length > 0 && bodyState.getCurrentContent().hasText();
   }
 
 	async function handleSubmit(event) {
-		event.preventDefault();
-
-		if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-				alert(
-							`Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-											1000000} MB.`
-						);
-				return;
-			}
+    event.preventDefault();
 
 		setIsLoading(true);
 
 		try {
-				await createPost({ content });
+				await createPost({
+          title: title,
+          body: JSON.stringify(convertToRaw(bodyState.getCurrentContent())),
+          type: "blog"
+        });
 				props.history.push("/");
 			} catch (e) {
 					alert(e);
@@ -49,18 +43,29 @@ export default function NewPost(props) {
 
   return (
     <div className="NewPost">
-      <form onSubmit={handleSubmit}>
-        <FormGroup controlId="content">
-          <FormControl
-            value={content}
-            className="textarea"
-            onChange={e => setContent(e.target.value)}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="post.title">
+          <Form.Control
+            value={title}
+            type="text"
+            placeholder="Title"
+            onChange={e => setTitle(e.target.value)}
           />
-        </FormGroup>
-        <FormGroup controlId="file">
-          <FormLabel>Attachment</FormLabel>
-          <FormControl onChange={handleFileChange} type="file" />
-        </FormGroup>
+        </Form.Group>
+        <Editor
+          editorState={bodyState}
+          editorClassName="post-editor"
+          onEditorStateChange={setBodyState}
+        />
+        {/* <Form.Group controlId="post.body">
+          <Form.Control
+            value={body}
+            as="textarea"
+            rows="10"
+            placeholder="Body"
+            onChange={e => setBody(e.target.value)}
+          />
+        </Form.Group> */}
         <LoaderButton
           block
           type="submit"
@@ -71,7 +76,7 @@ export default function NewPost(props) {
         >
           Create
         </LoaderButton>
-      </form>
+      </Form>
     </div>
   );
 }

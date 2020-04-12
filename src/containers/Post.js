@@ -5,7 +5,6 @@ import LoaderButton from "../components/LoaderButton";
 import "./Post.css";
 
 export default function Post(props) {
-  //const file = useRef(null);
   const [post, setPost] = useState(null);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -20,7 +19,6 @@ export default function Post(props) {
     async function onLoad() {
       try {
         const post = await loadPost();
-        console.log(post);
         const { body, title } = post;
 
         setTitle(title);
@@ -39,7 +37,6 @@ export default function Post(props) {
   }
 
   function savePost(post) {
-    console.log(post);
     return API.put("posts", `/posts/${props.match.params.id}`, {
       body: post
     });
@@ -56,7 +53,6 @@ export default function Post(props) {
       });
       props.history.push("/");
     } catch(e) {
-      console.log(e);
       alert(e);
       setIsLoading(false);
     }

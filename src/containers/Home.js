@@ -27,19 +27,10 @@ export default function Home(props) {
   }
 
   function renderPostsList(posts) {
-    console.log(posts);
     return posts.map((post, i) =>  
       <Post post={post} key={i} />
     );
   }
-
-  function renderPosts() {
-      return (
-            <div className="posts">
-              {!isLoading && renderPostsList(posts)}
-            </div>
-          );
-    }
 
   return (
       <div className="posts">

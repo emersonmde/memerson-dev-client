@@ -2,3 +2,10 @@
   padding-top: 100px;
   text-align: center;
 }
+
+.post-editor {
+  border: 1px solid #aaa;
+  border-radius: .2rem;
+  padding: 0 1rem 1rem 1rem;
+  margin-bottom: 4rem;
+}
