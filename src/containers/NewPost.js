@@ -53,7 +53,7 @@ export default function NewPost(props) {
         <FormGroup controlId="content">
           <FormControl
             value={content}
-            componentClass="textarea"
+            className="textarea"
             onChange={e => setContent(e.target.value)}
           />
         </FormGroup>
@@ -64,8 +64,8 @@ export default function NewPost(props) {
         <LoaderButton
           block
           type="submit"
-          bsSize="large"
-          bsStyle="primary"
+          size="large"
+          bsstyle="primary"
           isLoading={isLoading}
           disabled={!validateForm()}
         >

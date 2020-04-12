@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 import { Form } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import "./Posts.css";
+import "./Post.css";
 
-export default function Posts(props) {
+export default function Post(props) {
   //const file = useRef(null);
   const [post, setPost] = useState(null);
   const [title, setTitle] = useState("");
@@ -96,7 +96,7 @@ export default function Posts(props) {
           <LoaderButton
             block
             type="submit"
-            bsSize="large"
+            size="large"
             bsStyle="primary"
             isLoading={isLoading}
             disabled={!validateForm()}
@@ -105,7 +105,7 @@ export default function Posts(props) {
           </LoaderButton>
           <LoaderButton
             block
-            bsSize="large"
+            size="large"
             bsStyle="danger"
             onClick={handleDelete}
             isLoading={isDeleting}
